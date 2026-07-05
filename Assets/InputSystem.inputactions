@@ -1,0 +1,21 @@
+{
+  "name": "Player",
+  "controls": [
+    {"name": "Move", "path": "Vector2", "interactions": ""},
+    {"name": "ToggleAutoRun", "path": "Button", "interactions": ""}
+  ],
+  "bindings": [
+    {
+      "path": "<Keyboard>/w, <Keyboard>/a, <Keyboard>/s, <Keyboard>/d",
+      "groups": "",
+      "action": "Move",
+      "parameters": ""
+    },
+    {
+      "path": "<Keyboard>/space",
+      "groups": "",
+      "action": "ToggleAutoRun",
+      "parameters": ""
+    }
+  ]
+}
