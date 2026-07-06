@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine;
 
 public class PackageCreator {
     [MenuItem("Tools/Create Package")]
@@ -7,7 +8,7 @@ public class PackageCreator {
             "Assets/Scripts",
             "Assets/Scenes/TestBlock.unity"
         };
-        AssetDatabase.ExportPackage(assets, "NeonDistrict_TestBlock_v0.1.unitypackage", ExportPackageOptions.Recurse);
-        Debug.Log("Package saved to: " + System.IO.Directory.GetCurrentDirectory() + "/NeonDistrict_TestBlock_v0.1.unitypackage");
+        AssetDatabase.ExportPackage(assets, "NeonDistrict_TestBlock_v0.1.unitypackage", ExportPackageOptions.Recurse | ExportPackageOptions.IncludeLibraryAssets);
+        Debug.Log("Package saved to: " + Application.dataPath + "/../NeonDistrict_TestBlock_v0.1.unitypackage");
     }
 }
