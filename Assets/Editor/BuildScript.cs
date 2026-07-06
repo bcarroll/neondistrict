@@ -3,31 +3,26 @@ using UnityEditor;
 
 public class BuildScript {
     [MenuItem("Build/Windows")]
-    public static void BuildWindows() => Build("NeonDistrict_Win");
+    public static void BuildWindows() => Build("NeonDistrict_Win", BuildTarget.StandaloneWindows64);
 
     [MenuItem("Build/macOS")]
-    public static void BuildMacOS() => Build("NeonDistrict_macOS", "macOSStandalone");
+    public static void BuildMacOS() => Build("NeonDistrict_macOS", BuildTarget.StandaloneOSX);
 
     [MenuItem("Build/Android")]
-    public static void BuildAndroid() {
-        EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
-        PlayerSettings.SetScriptingBackend(NativePlatform.Android, ScriptingImplementation.Mono);
-        Build("NeonDistrict_Android.apk", "Android");
-    }
+    public static void BuildAndroid() => Build("NeonDistrict_Android.apk", BuildTarget.Android);
 
-    static void Build(string path, string target = "StandaloneWindows64") {
+    static void Build(string path, BuildTarget target) {
         var scenes = new[] { "Assets/Scenes/TestBlock.unity" };
-        var options = BuildPlayerOptions.defaultBuildOptions;
+        
+        EditorUserBuildSettings.development = true;
+        EditorUserBuildSettings.allowDebugging = true;
+        
+        var options = new BuildPlayerOptions();
+        options.scenes = scenes;
         options.locationPathName = $"builds/{path}";
-        options.target = BuildTarget.StandaloneWindows64;
+        options.target = target;
 
-        if (target == "Android") {
-            options.target = BuildTarget.Android;
-            options.options |= BuildOptions.IncludeTestScenes;
-        } else if (target == "macOS") {
-            options.target = BuildTarget.StandaloneOSX;
-        }
-
-        BuildPipeline.BuildPlayer(scenes, $"builds/{path}", options.target, options);
+        var result = BuildPipeline.BuildPlayer(options);
+        Debug.Log($"Build completed: {result.summary.outputPath}");
     }
 }

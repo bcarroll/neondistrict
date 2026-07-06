@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SmoothCameraTransition : MonoBehaviour {
     public float transitionDuration = 0.5f;

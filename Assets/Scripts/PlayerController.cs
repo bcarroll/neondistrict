@@ -1,27 +1,29 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour {
     public float moveSpeed = 5f;
     public bool autoRun = false;
     
-    Vector2 inputMove;
+    Vector3 moveInput;
     CharacterController controller;
     
     void Start() => controller = GetComponent<CharacterController>();
 
-    void OnMove(InputValue v) => inputMove = v.Get<Vector2>();
-    void OnToggleAutoRun() => autoRun = !autoRun;
-
     void Update() {
-        Vector3 moveDir = new(inputMove.x, 0, inputMove.y);
-        if (autoRun && inputMove == Vector2.zero)
-            moveDir = transform.forward;
-            
-        controller.Move(moveDir * moveSpeed * Time.deltaTime);
+        // Get input from keyboard
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
         
-        if (inputMove.magnitude > 0.1f) {
-            Quaternion targetRot = Quaternion.LookRotation(inputMove);
+        if (autoRun && h == 0f && v == 0f) {
+            moveInput = transform.forward;
+        } else {
+            moveInput = new Vector3(h, 0, v);
+        }
+            
+        controller.Move(moveInput * moveSpeed * Time.deltaTime);
+        
+        if (moveInput.magnitude > 0.1f) {
+            Quaternion targetRot = Quaternion.LookRotation(moveInput);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 0.2f);
         }
     }
